@@ -1,0 +1,115 @@
+unit uVendedor;
+
+interface
+
+uses
+  FireDAC.Comp.Client, dconexao, Vcl.Dialogs;
+
+type
+  TVendedor = class
+  private
+    FIDVENDEDOR: integer;
+    FNOMEVENDEDOR: string;
+    FEMAIL: string;
+    FENDERECO: string;
+    FBAIRRO: string;
+    FCEP: string;
+    FCIDADE: string;
+
+    class var FObjetoBusca: TVendedor;
+  public
+    destructor Destroy; override;
+    procedure Inicializar;
+    procedure Carrega;
+    procedure Incluir(pEfetuarCommit: boolean);
+    procedure Alterar(pEfetuarCommit: boolean);
+    procedure Excluir(pEfetuarCommit: boolean);
+
+    constructor Create;
+    class property ObjetoBusca: TVendedor read FObjetoBusca write FObjetoBusca;
+    property IDVENDEDOR: integer read FIDVENDEDOR write FIDVENDEDOR;
+    property NOMEVENDEDOR: string read FNOMEVENDEDOR write FNOMEVENDEDOR;
+    property EMAIL: string read FEMAIL write FEMAIL;
+    property ENDERECO: string read FENDERECO write FENDERECO;
+    property BAIRRO: string read FBAIRRO write FBAIRRO;
+    property CEP: string read FCEP write FCEP;
+    property CIDADE: string read FCIDADE write FCIDADE;
+  end;
+
+implementation
+
+{ TVendedor }
+
+procedure TVendedor.Alterar(pEfetuarCommit: boolean);
+var
+  lQuery: Tfdquery;
+begin
+  lQuery := Tfdquery.Create(nil);
+  try
+    lQuery.Connection := dtmconexao.FDConnection;
+    lQuery.Close;
+    lQuery.sql.Clear;
+    lQuery.sql.Add(' UPDATE VENDEDOR SET                ');
+    lQuery.sql.Add(' NOMEVENDEDOR = :NOMEVENDEDOR,      ');
+    lQuery.sql.Add(' EMAIL = :EMAIL,                    ');
+    lQuery.sql.Add(' ENDERECO = :ENDERECO,              ');
+    lQuery.sql.Add(' BAIRRO = :BAIRRO,                  ');
+    lQuery.sql.Add(' CEP = :CEP,                        ');
+    lQuery.sql.Add(' CIDADE = :CIDADE                   ');
+    lQuery.sql.Add(' WHERE IDVENDEDOR = :IDVENDEDOR     ');
+
+    lQuery.ParamByName('IDVENDEDOR').AsInteger := FIDVENDEDOR;
+    lQuery.ParamByName('NOMEVENDEDOR').Value := FNOMEVENDEDOR;
+    lQuery.ParamByName('EMAIL').Value := FEMAIL;
+    lQuery.ParamByName('ENDERECO').Value := FENDERECO;
+    lQuery.ParamByName('BAIRRO').Value := FBAIRRO;
+    lQuery.ParamByName('CEP').Value := FCEP;
+    lQuery.ParamByName('CIDADE').Value := FCIDADE;
+    lQuery.ExecSQL;
+    if pEfetuarCommit then
+    begin
+      dtmconexao.FDConnection.Commit;
+    end;
+
+  finally
+    lQuery.Free;
+  end;
+end;
+
+procedure TVendedor.Carrega;
+begin
+
+end;
+
+constructor TVendedor.Create;
+begin
+
+end;
+
+destructor TVendedor.Destroy;
+begin
+
+  inherited;
+end;
+
+procedure TVendedor.Excluir(pEfetuarCommit: boolean);
+begin
+
+end;
+
+procedure TVendedor.Incluir(pEfetuarCommit: boolean);
+begin
+
+end;
+
+procedure TVendedor.Inicializar;
+begin
+  FNOMEVENDEDOR := '';
+  FEMAIL := '';
+  FENDERECO := '';
+  FBAIRRO := '';
+  FCEP := '';
+  FCIDADE := '';
+end;
+
+end.

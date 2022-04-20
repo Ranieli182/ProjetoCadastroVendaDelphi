@@ -1,0 +1,174 @@
+unit fConsultaUnidades;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.StdCtrls,
+  Vcl.Grids, Vcl.DBGrids, fCadastroUnidades, dConexao, uUnidade;
+
+type
+  TfrmConsultaUnidade = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    dbgConsultaUnidades: TDBGrid;
+    btnIncluir: TButton;
+    btnAlterar: TButton;
+    btnVisualizar: TButton;
+    btnExcluir: TButton;
+    btnSair: TButton;
+    edtPesquisarUnidade: TEdit;
+    cbxFiltroUnidades: TComboBox;
+    procedure btnIncluirClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure btnVisualizarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure edtPesquisarUnidadeChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure AtualizarQueryUnidade;
+    procedure BuscarDadosUnidade;
+    procedure PesquisarUnidade(pTexto: String);
+  end;
+
+var
+  frmConsultaUnidade: TfrmConsultaUnidade;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmConsultaUnidade.btnAlterarClick(Sender: TObject);
+begin
+  BuscarDadosUnidade;
+end;
+
+procedure TfrmConsultaUnidade.btnExcluirClick(Sender: TObject);
+var
+  lUnidade: Tunidade;
+begin
+  if Application.MessageBox
+    ('Tem certeza que deseja excluir o registro selecionado?', 'Confirmação',
+    mb_yesNO + mb_iconQuestion + MB_DEFBUTTON2) = idYes then
+    if dtmConexao.qryClientes.State in [dsBrowse] then
+    begin
+      lUnidade := Tunidade.Create;
+      try
+        lUnidade.IDUNIDADE := dtmConexao.qryConsultaUnidades.FieldByName
+          ('IDUNIDADE').asinteger;
+        lUnidade.Excluir(true);
+        AtualizarQueryUnidade;
+        frmConsultaUnidade.Refresh;
+      finally
+        lUnidade.Free;
+      end;
+    end;
+end;
+
+procedure TfrmConsultaUnidade.btnIncluirClick(Sender: TObject);
+var
+  lFormulario: TfrmCadastroUnidades;
+begin
+  lFormulario := TfrmCadastroUnidades.Create(nil);
+  try
+    lFormulario.Tipo := 'Incluir';
+    lFormulario.ShowModal;
+    AtualizarQueryUnidade;
+  finally
+    lFormulario.Free;
+  end;
+end;
+
+procedure TfrmConsultaUnidade.btnSairClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TfrmConsultaUnidade.btnVisualizarClick(Sender: TObject);
+var
+  lFormulario: TfrmCadastroUnidades;
+  lUnidade: Tunidade;
+begin
+  lUnidade := Tunidade.Create;
+  lFormulario := TfrmCadastroUnidades.Create(nil);
+  try
+    lUnidade.IDUNIDADE := dtmConexao.qryConsultaUnidades.FieldByName
+      ('IDUNIDADE').asinteger;
+    lUnidade.Carrega;
+    lFormulario.edtNomeUnidade.Text := lUnidade.NOMEUNIDADE;
+    lFormulario.edtUnidade.Text := lUnidade.UNIDADE;
+    lFormulario.dtpDataCadastro.Date := lUnidade.DATACADASTROUNIDADE;
+    lFormulario.dtpDataCadastro.Enabled := false;
+    lFormulario.btnSalvar.Enabled := false;
+    lFormulario.ShowModal;
+    AtualizarQueryUnidade;
+  finally
+    lFormulario.Free;
+    lUnidade.Free;
+  end;
+end;
+
+procedure TfrmConsultaUnidade.BuscarDadosUnidade;
+var
+  lFormulario: TfrmCadastroUnidades;
+  lUnidade: Tunidade;
+begin
+  lUnidade := Tunidade.Create;
+  lFormulario := TfrmCadastroUnidades.Create(nil);
+  try
+    lFormulario.Tipo := 'Alterar';
+    lFormulario.CodigoUnidade := 0;
+    lUnidade.IDUNIDADE := dtmConexao.qryConsultaUnidades.FieldByName
+      ('IDUNIDADE').asinteger;
+    lFormulario.CodigoUnidade := lUnidade.IDUNIDADE;
+    lUnidade.Carrega;
+    lFormulario.edtNomeUnidade.Text := lUnidade.NOMEUNIDADE;
+    lFormulario.edtUnidade.Text := lUnidade.UNIDADE;
+    lFormulario.dtpDataCadastro.Date := lUnidade.DATACADASTROUNIDADE;
+    lFormulario.dtpDataCadastro.Enabled := false;
+    lFormulario.ShowModal;
+    AtualizarQueryUnidade;
+  finally
+    lFormulario.Free;
+    lUnidade.Free;
+  end;
+
+end;
+
+procedure TfrmConsultaUnidade.edtPesquisarUnidadeChange(Sender: TObject);
+begin
+  PesquisarUnidade(edtPesquisarUnidade.Text);
+end;
+
+procedure TfrmConsultaUnidade.FormShow(Sender: TObject);
+begin
+  WindowState := wsMaximized;
+  AtualizarQueryUnidade;
+end;
+
+procedure TfrmConsultaUnidade.PesquisarUnidade(pTexto: String);
+var
+  lCampo: String;
+begin
+  dtmConexao.qryConsultaUnidades.close;
+  dtmConexao.qryConsultaUnidades.SQL.Clear;
+  dtmConexao.qryConsultaUnidades.SQL.add
+    ('SELECT * FROM UNIDADES WHERE NOMEUNIDADE ' + lCampo + ' LIKE ' +
+    QuotedStr('%' + pTexto + '%'));
+  dtmConexao.qryConsultaUnidades.Open;
+end;
+
+procedure TfrmConsultaUnidade.AtualizarQueryUnidade;
+begin
+  dtmConexao.qryConsultaUnidades.close;
+  dtmConexao.qryConsultaUnidades.SQL.Clear;
+  dtmConexao.qryConsultaUnidades.SQL.add('SELECT * FROM UNIDADES');
+  dtmConexao.qryConsultaUnidades.Open;
+end;
+
+end.

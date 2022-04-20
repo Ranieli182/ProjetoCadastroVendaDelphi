@@ -1,0 +1,50 @@
+unit uItemVenda;
+
+interface
+
+uses
+  FireDAC.Comp.Client,
+  dconexao,
+  Vcl.Dialogs,
+  System.SysUtils,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.ExtCtrls,
+  uHelpersImagensBase64;
+
+type
+  TItemVenda = class
+  private
+    FID: Integer;
+    FEMISSAO: TDate;
+    FVENDA: Integer;
+    FPRODUTO: Integer;
+    FQUANTIDADE: Integer;
+    FVALOR: Double;
+    FDESCONTO: Double;
+
+    class var FObjetoBusca: TItemVenda;
+  public
+    destructor Destroy; override;
+    procedure Inicializar;
+    procedure Carrega;
+    procedure Incluir(pEfetuarCommit: boolean);
+    procedure Alterar(pEfetuarCommit: boolean);
+    procedure Excluir(pEfetuarCommit: boolean);
+
+    constructor Create;
+    class property ObjetoBusca: TItemVenda read FObjetoBusca write FObjetoBusca;
+    class function GeraProximoID: Integer;
+
+    property ID: Integer read FID write FID;
+    property EMISSAO: TDate read FEMISSAO write FEMISSAO;
+    property VENDA: Integer read FVENDA write FVENDA;
+    property PRODUTO: Integer read FPRODUTO write FPRODUTO;
+    property QUANTIDADE: Integer read FQUANTIDADE write FQUANTIDADE;
+    property VALOR: Double read FVALOR write FVALOR;
+    property DESCONTO: Double read FDESCONTO write FDESCONTO;
+
+  end;
+implementation
+
+end.

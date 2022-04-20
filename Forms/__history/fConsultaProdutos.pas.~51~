@@ -1,0 +1,336 @@
+{$A8,B-,C+,D+,E-,F-,G+,H+,I+,J-,K-,L+,M-,N-,O+,P+,Q-,R-,S-,T-,U-,V+,W-,X+,Y+,Z1}
+{$MINSTACKSIZE $00004000}
+{$MAXSTACKSIZE $00100000}
+{$IMAGEBASE $00400000}
+{$APPTYPE GUI}
+{$WARN SYMBOL_DEPRECATED ON}
+{$WARN SYMBOL_LIBRARY ON}
+{$WARN SYMBOL_PLATFORM ON}
+{$WARN SYMBOL_EXPERIMENTAL ON}
+{$WARN UNIT_LIBRARY ON}
+{$WARN UNIT_PLATFORM ON}
+{$WARN UNIT_DEPRECATED ON}
+{$WARN UNIT_EXPERIMENTAL ON}
+{$WARN HRESULT_COMPAT ON}
+{$WARN HIDING_MEMBER ON}
+{$WARN HIDDEN_VIRTUAL ON}
+{$WARN GARBAGE ON}
+{$WARN BOUNDS_ERROR ON}
+{$WARN ZERO_NIL_COMPAT ON}
+{$WARN STRING_CONST_TRUNCED ON}
+{$WARN FOR_LOOP_VAR_VARPAR ON}
+{$WARN TYPED_CONST_VARPAR ON}
+{$WARN ASG_TO_TYPED_CONST ON}
+{$WARN CASE_LABEL_RANGE ON}
+{$WARN FOR_VARIABLE ON}
+{$WARN CONSTRUCTING_ABSTRACT ON}
+{$WARN COMPARISON_FALSE ON}
+{$WARN COMPARISON_TRUE ON}
+{$WARN COMPARING_SIGNED_UNSIGNED ON}
+{$WARN COMBINING_SIGNED_UNSIGNED ON}
+{$WARN UNSUPPORTED_CONSTRUCT ON}
+{$WARN FILE_OPEN ON}
+{$WARN FILE_OPEN_UNITSRC ON}
+{$WARN BAD_GLOBAL_SYMBOL ON}
+{$WARN DUPLICATE_CTOR_DTOR ON}
+{$WARN INVALID_DIRECTIVE ON}
+{$WARN PACKAGE_NO_LINK ON}
+{$WARN PACKAGED_THREADVAR ON}
+{$WARN IMPLICIT_IMPORT ON}
+{$WARN HPPEMIT_IGNORED ON}
+{$WARN NO_RETVAL ON}
+{$WARN USE_BEFORE_DEF ON}
+{$WARN FOR_LOOP_VAR_UNDEF ON}
+{$WARN UNIT_NAME_MISMATCH ON}
+{$WARN NO_CFG_FILE_FOUND ON}
+{$WARN IMPLICIT_VARIANTS ON}
+{$WARN UNICODE_TO_LOCALE ON}
+{$WARN LOCALE_TO_UNICODE ON}
+{$WARN IMAGEBASE_MULTIPLE ON}
+{$WARN SUSPICIOUS_TYPECAST ON}
+{$WARN PRIVATE_PROPACCESSOR ON}
+{$WARN UNSAFE_TYPE OFF}
+{$WARN UNSAFE_CODE OFF}
+{$WARN UNSAFE_CAST OFF}
+{$WARN OPTION_TRUNCATED ON}
+{$WARN WIDECHAR_REDUCED ON}
+{$WARN DUPLICATES_IGNORED ON}
+{$WARN UNIT_INIT_SEQ ON}
+{$WARN LOCAL_PINVOKE ON}
+{$WARN MESSAGE_DIRECTIVE ON}
+{$WARN TYPEINFO_IMPLICITLY_ADDED ON}
+{$WARN RLINK_WARNING ON}
+{$WARN IMPLICIT_STRING_CAST ON}
+{$WARN IMPLICIT_STRING_CAST_LOSS ON}
+{$WARN EXPLICIT_STRING_CAST OFF}
+{$WARN EXPLICIT_STRING_CAST_LOSS OFF}
+{$WARN CVT_WCHAR_TO_ACHAR ON}
+{$WARN CVT_NARROWING_STRING_LOST ON}
+{$WARN CVT_ACHAR_TO_WCHAR ON}
+{$WARN CVT_WIDENING_STRING_LOST ON}
+{$WARN NON_PORTABLE_TYPECAST ON}
+{$WARN XML_WHITESPACE_NOT_ALLOWED ON}
+{$WARN XML_UNKNOWN_ENTITY ON}
+{$WARN XML_INVALID_NAME_START ON}
+{$WARN XML_INVALID_NAME ON}
+{$WARN XML_EXPECTED_CHARACTER ON}
+{$WARN XML_CREF_NO_RESOLVE ON}
+{$WARN XML_NO_PARM ON}
+{$WARN XML_NO_MATCHING_PARM ON}
+{$WARN IMMUTABLE_STRINGS OFF}
+unit fConsultaProdutos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.ExtCtrls, Vcl.StdCtrls, fCadastroProdutos, dConexao, uProduto,
+  FireDAC.Comp.Client;
+
+type
+  TfrmConsultaProdutos = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    dbgConsultaProduto: TDBGrid;
+    btnIncluir: TButton;
+    btnAlterar: TButton;
+    btnVisualizar: TButton;
+    btnExcluir: TButton;
+    btnSair: TButton;
+    edtPesquisarProdutos: TEdit;
+    cbxFiltroProduto: TComboBox;
+    procedure FormShow(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure btnIncluirClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnVisualizarClick(Sender: TObject);
+    procedure edtPesquisarProdutosChange(Sender: TObject);
+    procedure cbxFiltroProdutoChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure BuscaDadosProduto;
+    procedure AtualizarQueryProduto;
+    function RetornaUnidade(pID: integer): String;
+  end;
+
+var
+  frmConsultaProdutos: TfrmConsultaProdutos;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmConsultaProdutos.AtualizarQueryProduto;
+begin
+  dtmConexao.qryConsultaProdutos.close;
+  dtmConexao.qryConsultaProdutos.SQL.Clear;
+  dtmConexao.qryConsultaProdutos.SQL.Add(' SELECT                         ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(' P.ID                           ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.FK_UNIDADE                  ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.DESCRICAO                   ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.REFERENCIA                  ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.PRECO                       ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.CUSTO                       ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.SALDO                       ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.PESO                        ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.FOTO                        ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', U.UNIDADE                     ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(', P.MARCA                       ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(' FROM PRODUTO P                 ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(' INNER JOIN UNIDADES U          ');
+  dtmConexao.qryConsultaProdutos.SQL.Add(' ON P.FK_UNIDADE = U.IDUNIDADE ');
+  if edtPesquisarProdutos.Text <> emptyStr then
+  begin
+    case cbxFiltroProduto.ItemIndex of
+      0:
+        begin
+          dtmConexao.qryConsultaProdutos.SQL.Add('WHERE P.ID LIKE ' +
+            QuotedStr('%' + edtPesquisarProdutos.Text + '%'));
+        end;
+      1:
+        begin
+          dtmConexao.qryConsultaProdutos.SQL.Add('WHERE P.DESCRICAO LIKE ' +
+            QuotedStr('%' + edtPesquisarProdutos.Text + '%'));
+        end;
+    end;
+  end;
+  dtmConexao.qryConsultaProdutos.Open;
+end;
+
+procedure TfrmConsultaProdutos.btnAlterarClick(Sender: TObject);
+begin
+  if dtmConexao.qryConsultaProdutos.RecordCount > 0 then
+  begin
+    BuscaDadosProduto;
+  end
+  else
+  begin
+    ShowMessage('Não há registro selecionado.');
+  end;
+
+end;
+
+procedure TfrmConsultaProdutos.btnExcluirClick(Sender: TObject);
+begin
+  if dtmConexao.qryConsultaProdutos.RecordCount > 0 then
+  begin
+
+    TProduto.Existe(dtmConexao.qryConsultaVendas.FieldByName('ID').AsInteger);
+    TProduto.ObjetoBusca.Excluir(true);
+
+    frmConsultaProdutos.Refresh;
+    AtualizarQueryProduto;
+
+  end;
+
+end;
+
+procedure TfrmConsultaProdutos.btnSairClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TfrmConsultaProdutos.btnIncluirClick(Sender: TObject);
+var
+  lFormulario: TfrmCadastroProdutos;
+  lProduto: Tproduto;
+begin
+  lFormulario := TfrmCadastroProdutos.Create(nil);
+  lProduto := TProduto.Create;
+  try
+    lFormulario.Tipo := 'Incluir';
+    lFormulario.edtCodigoProduto.Enabled := false;
+    lFormulario.edtCodigoProduto.Text := lProduto.GeraProximoID.ToString;
+    lFormulario.ShowModal;
+    AtualizarQueryProduto;
+  finally
+    lFormulario.Free;
+    lProduto.Free;
+  end;
+end;
+
+procedure TfrmConsultaProdutos.btnVisualizarClick(Sender: TObject);
+var
+  lFormulario: TfrmCadastroProdutos;
+  lProduto: TProduto;
+begin
+  if dtmConexao.qryConsultaProdutos.RecordCount > 0 then
+  begin
+    lProduto := TProduto.Create;
+    lFormulario := TfrmCadastroProdutos.Create(nil);
+    try
+      lProduto.ID := dtmConexao.qryConsultaProdutos.FieldByName('ID').AsInteger;
+      lProduto.Carrega;
+      lProduto.CarregaImagem(lFormulario.imgFotoProduto);
+      lFormulario.edtDescricao.Text := lProduto.DESCRICAO;
+      lFormulario.edtMarca.Text := lProduto.MARCA;
+      lFormulario.edtReferencia.Text := lProduto.REFERENCIA;
+      lFormulario.edtPreco.Text := FloatToStr(lProduto.PRECO);
+      lFormulario.edtSaldo.Text := FloatToStr(lProduto.SALDO);
+      lFormulario.edtCusto.Text := FloatToStr(lProduto.CUSTO);
+      lFormulario.CarregaUnidadeComboBox;
+      lFormulario.cbxUnidade.ItemIndex :=
+        lFormulario.cbxUnidade.Items.IndexOfObject
+        (TObject(lProduto.FK_UNIDADE));
+      lFormulario.btnSalvar.Enabled := false;
+      lFormulario.ShowModal;
+      AtualizarQueryProduto;
+    finally
+      lFormulario.Free;
+      lProduto.Free;
+    end;
+  end
+  else
+  begin
+    ShowMessage('Não há registro selecionado.');
+  end;
+
+end;
+
+procedure TfrmConsultaProdutos.BuscaDadosProduto;
+var
+  lFormulario: TfrmCadastroProdutos;
+  lProduto: TProduto;
+begin
+  lProduto := TProduto.Create;
+  lFormulario := TfrmCadastroProdutos.Create(nil);
+
+  try
+
+    lFormulario.Tipo := 'Alterar';
+    lFormulario.CodigoProduto := 0;
+    lProduto.ID := dtmConexao.qryConsultaProdutos.FieldByName('ID').AsInteger;
+    lFormulario.CodigoProduto := lProduto.ID;
+    lProduto.Carrega;
+    lProduto.CarregaImagem(lFormulario.imgFotoProduto);
+    lFormulario.edtCodigoProduto.Text := IntToStr(lProduto.ID);
+    lFormulario.edtDescricao.Text := lProduto.DESCRICAO;
+    lFormulario.edtMarca.Text := lProduto.MARCA;
+    lFormulario.edtReferencia.Text := lProduto.REFERENCIA;
+    lFormulario.edtPreco.Text := FloatToStr(lProduto.PRECO);
+    lFormulario.edtSaldo.Text := FloatToStr(lProduto.SALDO);
+    lFormulario.edtCusto.Text := FloatToStr(lProduto.CUSTO);
+    lFormulario.CarregaUnidadeComboBox;
+    lFormulario.cbxUnidade.ItemIndex :=
+      lFormulario.cbxUnidade.Items.IndexOfObject(TObject(lProduto.FK_UNIDADE));
+    lFormulario.ShowModal;
+    AtualizarQueryProduto;
+  finally
+    lFormulario.Free;
+    lProduto.Free;
+  end;
+end;
+
+procedure TfrmConsultaProdutos.cbxFiltroProdutoChange(Sender: TObject);
+begin
+  case cbxFiltroProduto.ItemIndex of
+    0:
+      begin
+        edtPesquisarProdutos.NumbersOnly := true;
+        edtPesquisarProdutos.Clear;
+      end;
+    1:
+      begin
+        edtPesquisarProdutos.NumbersOnly := false;
+        edtPesquisarProdutos.Clear;
+      end;
+  end;
+end;
+
+procedure TfrmConsultaProdutos.edtPesquisarProdutosChange(Sender: TObject);
+begin
+  AtualizarQueryProduto;
+end;
+
+procedure TfrmConsultaProdutos.FormShow(Sender: TObject);
+begin
+  WindowState := wsMaximized;
+  AtualizarQueryProduto;
+end;
+
+function TfrmConsultaProdutos.RetornaUnidade(pID: integer): String;
+var
+  lquery: tfdquery;
+begin
+  lquery := tfdquery.Create(nil);
+  try
+
+    lquery.Connection := dtmConexao.FDConnection;
+    lquery.close;
+    lquery.SQL.Add('SELECT * FROM UNIDADES');
+    lquery.SQL.Add(' where IDUNIDADE = :IDUNIDADE');
+    lquery.ParamByName('IDUNIDADE').AsInteger := pID;
+    lquery.Open;
+
+    result := lquery.FieldByName('UNIDADE').asstring;
+  finally
+    lquery.Free;
+  end;
+end;
+
+end.

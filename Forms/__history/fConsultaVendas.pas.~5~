@@ -1,0 +1,61 @@
+unit fConsultaVendas;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls, dConexao, fVenda;
+
+type
+  TfrmConsultaVendas = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    dbgConsultarVendas: TDBGrid;
+    btnIncluir: TButton;
+    btnExcluir: TButton;
+    btnVisualizar: TButton;
+    btnSair: TButton;
+    ComboBox1: TComboBox;
+    edtConsultarVendas: TEdit;
+    procedure btnIncluirClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConsultaVendas: TfrmConsultaVendas;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmConsultaVendas.btnIncluirClick(Sender: TObject);
+var
+  lFormulario: TfrmVenda;
+begin
+  lFormulario := TfrmVenda.Create(nil);
+  try
+    lFormulario.ShowModal;
+  finally
+    lFormulario.Free;
+  end;
+end;
+
+procedure TfrmConsultaVendas.btnSairClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TfrmConsultaVendas.FormShow(Sender: TObject);
+begin
+  WindowState := wsMaximized;
+end;
+
+end.

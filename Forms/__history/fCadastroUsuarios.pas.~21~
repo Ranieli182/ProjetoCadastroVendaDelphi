@@ -1,0 +1,197 @@
+unit fCadastroUsuarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, uUsuario,
+  dConexao;
+
+type
+  TfrmCadastroUsuarios = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    btnSalvar: TButton;
+    btnSair: TButton;
+    edtNomeUsuario: TEdit;
+    lblNomeUsuario: TLabel;
+    edtLogin: TEdit;
+    edtSenha: TEdit;
+    edtEmail: TEdit;
+    edtNivelAcesso: TEdit;
+    lblLogin: TLabel;
+    lblSenha: TLabel;
+    lblEmail: TLabel;
+    lblNivelAcesso: TLabel;
+    edtCodigoUsuario: TEdit;
+    lblCodigoUsuario: TLabel;
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure btnSairClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    CodigoUsuario: integer;
+    Tipo: String;
+    EmailAntigo: String;
+    LoginAntigo: String;
+    procedure IncluirUsuario;
+    procedure AlterarUsuario;
+    function ValidaLogin: Boolean;
+    function ValidaEmail: Boolean;
+  end;
+
+var
+  frmCadastroUsuarios: TfrmCadastroUsuarios;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCadastroUsuarios.AlterarUsuario;
+var
+  lUsuario: Tusuario;
+begin
+  lUsuario := Tusuario.Create;
+  try
+    lUsuario.IDUSUARIO := CodigoUsuario;
+    lUsuario.NOMEUSUARIO := edtNomeUsuario.Text;
+    lUsuario.LOGIN := edtLogin.Text;
+    lUsuario.SENHA := edtSenha.Text;
+    lUsuario.EMAIL := edtEmail.Text;
+    lUsuario.NIVELACESSO := edtNivelAcesso.Text;
+    lUsuario.Alterar(true);
+  finally
+    lUsuario.Free;
+  end;
+end;
+
+procedure TfrmCadastroUsuarios.btnSairClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TfrmCadastroUsuarios.btnSalvarClick(Sender: TObject);
+begin
+  if trim(edtNomeUsuario.Text) = '' then
+  begin
+    ShowMessage
+      ('Campo obrigatório não informado, favor preencher o Nome do Usuário.');
+    edtNomeUsuario.SetFocus;
+    exit;
+  end
+  else if trim(edtLogin.Text) = '' then
+  begin
+    ShowMessage
+      ('Campo obrigatório não informado, favor preencher o Login do Usuário.');
+    edtLogin.SetFocus;
+    exit;
+  end
+  else if trim(edtSenha.Text) = '' then
+  begin
+    ShowMessage
+      ('Campo obrigatório não informado, favor preencher a Senha do Usuário.');
+    edtSenha.SetFocus;
+    exit;
+  end
+  else
+  begin
+    if Tipo = 'Incluir' then
+    begin
+      IncluirUsuario;
+    end
+    else if Tipo = 'Alterar' then
+    begin
+       if not (ValidaEmail) then
+       begin
+           showmessage('Não é permitido informar um E-mail que já existe no cadastro.');
+       end
+       else if not (ValidaLogin) then
+       begin
+          showmessage('Não é permitido informar um Login que já existe no cadastro.');
+       end
+       else
+       begin
+           AlterarUsuario;
+       end;
+    end;
+    close;
+  end;
+
+end;
+
+procedure TfrmCadastroUsuarios.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #13) then
+  begin
+    Key := #0;
+    Perform(wm_NextDlgCtl, 0, 0);
+  end;
+end;
+
+procedure TfrmCadastroUsuarios.FormShow(Sender: TObject);
+begin
+  edtNomeUsuario.SetFocus;
+end;
+
+procedure TfrmCadastroUsuarios.IncluirUsuario;
+var
+  lUsuario: Tusuario;
+begin
+  lUsuario := Tusuario.Create;
+  try
+    lUsuario.NOMEUSUARIO := edtNomeUsuario.Text;
+    lUsuario.LOGIN := edtLogin.Text;
+    lUsuario.SENHA := edtSenha.Text;
+    lUsuario.EMAIL := edtEmail.Text;
+    lUsuario.NIVELACESSO := edtNivelAcesso.Text;
+    lUsuario.Incluir(true);
+  finally
+    lUsuario.Free;
+  end;
+end;
+
+function TfrmCadastroUsuarios.ValidaEmail: Boolean;
+var
+  lUsuario: Tusuario;
+begin
+  lUsuario := Tusuario.Create;
+  try
+  Result := true;
+    if (EmailAntigo <> edtEmail.Text) then
+    begin
+    if  lUsuario.VerificaUnique('EMAIL', edtEmail.Text) then
+          begin
+             Result := false;
+          end;
+    end;
+  finally
+    lUsuario.Free;
+  end;
+
+end;
+
+function TfrmCadastroUsuarios.ValidaLogin: Boolean;
+var
+  lUsuario: Tusuario;
+begin
+  lUsuario := Tusuario.Create;
+  try
+  Result := true;
+    if (LoginAntigo <> edtLogin.Text) then
+    begin
+    if  lUsuario.VerificaUnique('LOGIN', edtLogin.Text) then
+          begin
+             Result := false;
+          end;
+    end;
+  finally
+    lUsuario.Free;
+  end;
+end;
+
+end.

@@ -1,0 +1,263 @@
+object frmRelatorioProdutoFortes: TfrmRelatorioProdutoFortes
+  Left = 0
+  Top = 0
+  Caption = 'frmRelatorioProdutoFortes'
+  ClientHeight = 473
+  ClientWidth = 770
+  Color = clBtnFace
+  CustomTitleBar.CaptionAlignment = taCenter
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object rlrProduto: TRLReport
+    Left = 0
+    Top = 0
+    Width = 794
+    Height = 1123
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    object rlbCabecalho: TRLBand
+      Left = 38
+      Top = 38
+      Width = 718
+      Height = 32
+      BandType = btHeader
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      object RLSystemInfo1: TRLSystemInfo
+        Left = 3
+        Top = 10
+        Width = 39
+        Height = 16
+        Text = ''
+      end
+      object RLSystemInfo2: TRLSystemInfo
+        Left = 664
+        Top = 10
+        Width = 39
+        Height = 16
+        Alignment = taRightJustify
+        Info = itHour
+        Text = ''
+      end
+    end
+    object rlbTitulo: TRLBand
+      Left = 38
+      Top = 70
+      Width = 718
+      Height = 34
+      BandType = btTitle
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      object lblTitulo: TRLLabel
+        Left = 0
+        Top = 0
+        Width = 718
+        Height = 24
+        Align = faClientTop
+        Alignment = taCenter
+        Caption = 'Relat'#243'rio de Produtos'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -21
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object rlbColunas: TRLBand
+      Left = 38
+      Top = 104
+      Width = 718
+      Height = 32
+      BandType = btColumnHeader
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = False
+      Borders.DrawRight = False
+      Borders.DrawBottom = True
+      object lblCodigo: TRLLabel
+        Left = 24
+        Top = 11
+        Width = 42
+        Height = 15
+        Caption = 'C'#243'digo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblDescricao: TRLLabel
+        Left = 112
+        Top = 10
+        Width = 61
+        Height = 15
+        Caption = 'Descri'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblMarca: TRLLabel
+        Left = 208
+        Top = 10
+        Width = 39
+        Height = 15
+        Caption = 'Marca'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblPreco: TRLLabel
+        Left = 304
+        Top = 10
+        Width = 37
+        Height = 15
+        Caption = 'Pre'#231'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblImagem: TRLLabel
+        Left = 600
+        Top = 10
+        Width = 49
+        Height = 15
+        Caption = 'Imagem'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblSaldo: TRLLabel
+        Left = 432
+        Top = 10
+        Width = 35
+        Height = 15
+        Caption = 'Saldo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object rlbDetalhes: TRLBand
+      Left = 38
+      Top = 136
+      Width = 718
+      Height = 113
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+      object RLImage1: TRLImage
+        Left = 584
+        Top = 6
+        Width = 105
+        Height = 105
+      end
+      object RLDBText1: TRLDBText
+        Left = 24
+        Top = 40
+        Width = 57
+        Height = 14
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText2: TRLDBText
+        Left = 112
+        Top = 40
+        Width = 57
+        Height = 14
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
+      object RLDBText3: TRLDBText
+        Left = 208
+        Top = 40
+        Width = 57
+        Height = 14
+        Text = ''
+      end
+      object RLDBText4: TRLDBText
+        Left = 304
+        Top = 40
+        Width = 57
+        Height = 14
+        Text = ''
+      end
+      object RLDBText5: TRLDBText
+        Left = 432
+        Top = 40
+        Width = 57
+        Height = 14
+        Text = ''
+      end
+    end
+    object rlbRodape: TRLBand
+      Left = 38
+      Top = 249
+      Width = 718
+      Height = 33
+      BandType = btFooter
+    end
+  end
+  object qryRelatorioCliente: TFDQuery
+    Connection = dtmConexao.FDConnection
+    SQL.Strings = (
+      'SELECT * FROM CLIENTE')
+    Left = 152
+    Top = 480
+  end
+  object dtsRelatorioCliente: TDataSource
+    DataSet = qryRelatorioCliente
+    Left = 152
+    Top = 528
+  end
+end

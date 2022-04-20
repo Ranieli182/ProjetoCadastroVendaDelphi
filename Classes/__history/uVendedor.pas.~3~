@@ -1,0 +1,84 @@
+unit uVendedor;
+
+interface
+
+uses
+  FireDAC.Comp.Client, dconexao, Vcl.Dialogs;
+
+type
+  TVendedor = class
+  private
+    FIDVENDEDOR: integer;
+    FNOMEVENDEDOR: string;
+    FEMAIL: string;
+    FENDERECO: string;
+    FBAIRRO: string;
+    FCEP: string;
+    FCIDADE: string;
+
+    class var FObjetoBusca: TVendedor;
+  public
+    destructor Destroy; override;
+    procedure Inicializar;
+    procedure Carrega;
+    procedure Incluir(pEfetuarCommit: boolean);
+    procedure Alterar(pEfetuarCommit: boolean);
+    procedure Excluir(pEfetuarCommit: boolean);
+
+    constructor Create;
+    class property ObjetoBusca: TVendedor read FObjetoBusca write FObjetoBusca;
+    property IDVENDEDOR: integer read FIDVENDEDOR write FIDVENDEDOR;
+    property NOMEVENDEDOR: string read FNOMEVENDEDOR write FNOMEVENDEDOR;
+    property EMAIL: string read FEMAIL write FEMAIL;
+    property ENDERECO: string read FENDERECO write FENDERECO;
+    property BAIRRO: string read FBAIRRO write FBAIRRO;
+    property CEP: string read FCEP write FCEP;
+    property CIDADE: string read FCIDADE write FCIDADE;
+  end;
+
+implementation
+
+{ TVendedor }
+
+procedure TVendedor.Alterar(pEfetuarCommit: boolean);
+begin
+
+end;
+
+procedure TVendedor.Carrega;
+begin
+
+end;
+
+constructor TVendedor.Create;
+begin
+
+end;
+
+destructor TVendedor.Destroy;
+begin
+
+  inherited;
+end;
+
+procedure TVendedor.Excluir(pEfetuarCommit: boolean);
+begin
+
+end;
+
+procedure TVendedor.Incluir(pEfetuarCommit: boolean);
+begin
+
+end;
+
+procedure TVendedor.Inicializar;
+begin
+  FNOMEVENDEDOR := '';
+  FEMAIL := '';
+  FENDERECO := '';
+  FBAIRRO := '';
+  FCEP := '';
+  FCIDADE := '';
+end;
+
+end.

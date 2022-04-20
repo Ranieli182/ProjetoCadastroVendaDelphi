@@ -1,0 +1,74 @@
+object frmRelatorioProdutoFortes: TfrmRelatorioProdutoFortes
+  Left = 0
+  Top = 0
+  Caption = 'frmRelatorioProdutoFortes'
+  ClientHeight = 473
+  ClientWidth = 770
+  Color = clBtnFace
+  CustomTitleBar.CaptionAlignment = taCenter
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object rlrProduto: TRLReport
+    Left = 0
+    Top = 0
+    Width = 794
+    Height = 1123
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    object rlbCabecalho: TRLBand
+      Left = 38
+      Top = 38
+      Width = 718
+      Height = 32
+      BandType = btHeader
+    end
+    object rlbTitulo: TRLBand
+      Left = 38
+      Top = 70
+      Width = 718
+      Height = 35
+      BandType = btTitle
+    end
+    object rlbColunas: TRLBand
+      Left = 38
+      Top = 105
+      Width = 718
+      Height = 32
+      BandType = btColumnHeader
+    end
+    object rlbDetalhes: TRLBand
+      Left = 38
+      Top = 137
+      Width = 718
+      Height = 48
+    end
+    object rlbRodape: TRLBand
+      Left = 38
+      Top = 185
+      Width = 718
+      Height = 32
+      BandType = btFooter
+    end
+  end
+  object qryRelatorioCliente: TFDQuery
+    Connection = dtmConexao.FDConnection
+    SQL.Strings = (
+      'SELECT * FROM CLIENTE')
+    Left = 152
+    Top = 480
+  end
+  object dtsRelatorioCliente: TDataSource
+    DataSet = qryRelatorioCliente
+    Left = 152
+    Top = 528
+  end
+end

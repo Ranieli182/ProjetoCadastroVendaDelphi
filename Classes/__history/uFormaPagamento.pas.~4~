@@ -1,0 +1,34 @@
+unit uFormaPagamento;
+
+interface
+
+uses
+  FireDAC.Comp.Client, dconexao, Vcl.Dialogs, System.SysUtils;
+
+type
+  TFormaPagamento = class
+  private
+    FIDFORMAPAGAMENTO: Integer;
+    FDESCRICAO: string;
+    FTIPO: string;
+
+    class var FObjetoBusca: TFormaPagamento;
+  public
+    destructor Destroy; override;
+    procedure Inicializar;
+    procedure Carrega;
+    procedure Incluir(pEfetuarCommit: boolean);
+    procedure Alterar(pEfetuarCommit: boolean);
+    procedure Excluir(pEfetuarCommit: boolean);
+    function MostraProximoID: Integer;
+
+    constructor Create;
+    class property ObjetoBusca: TFormaPagamento read FObjetoBusca write FObjetoBusca;
+    property IDFORMAPAGAMENTO: Integer read FIDFORMAPAGAMENTO write FIDFORMAPAGAMENTO;
+    property DESCRICAO: string read FDESCRICAO write FDESCRICAO;
+    property TIPO: string read FTIPO write FTIPO;
+  end;
+
+implementation
+
+end.

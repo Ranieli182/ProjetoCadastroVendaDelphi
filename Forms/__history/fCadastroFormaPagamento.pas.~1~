@@ -1,0 +1,34 @@
+unit fCadastroFormaPagamento;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfrmCadastroFormaPagamento = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    edtCodigoFormaPagamento: TEdit;
+    edtDescricao: TEdit;
+    rdgTipo: TRadioGroup;
+    lblCodigoFormaPagamento: TLabel;
+    lblDescricao: TLabel;
+    btnSalvar: TButton;
+    btnCancelar: TButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCadastroFormaPagamento: TfrmCadastroFormaPagamento;
+
+implementation
+
+{$R *.dfm}
+
+end.

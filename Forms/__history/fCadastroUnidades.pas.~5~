@@ -1,0 +1,80 @@
+unit fCadastroUnidades;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls,
+  Vcl.ExtCtrls, dConexao, uUnidade;
+
+type
+  TForm1 = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    edtUnidade: TEdit;
+    edtNomeUnidade: TEdit;
+    lblUnidade: TLabel;
+    lblNomeUnidade: TLabel;
+    btnSalvar: TButton;
+    dtpDataCadastro: TDateTimePicker;
+    lblDataCadastro: TLabel;
+    btnCancelar: TButton;
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    CodigoUnidade: integer;
+    procedure IncluirUnidade;
+    procedure AlterarUnidade;
+
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.AlterarUnidade;
+var
+  lUnidade: Tunidade;
+begin
+  lUnidade := Tunidade.Create;
+  try
+    lUnidade.NOMEUNIDADE := edtNomeUnidade.Text;
+    lUnidade.UNIDADE := edtUnidade.Text;
+    lUnidade.Alterar(true);
+  finally
+    lUnidade.Free;
+  end;
+end;
+
+procedure TForm1.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = #13) then
+  begin
+    Key := #0;
+    Perform(wm_NextDlgCtl, 0, 0);
+  end;
+end;
+
+procedure TForm1.IncluirUnidade;
+var
+  lUnidade: Tunidade;
+begin
+  lUnidade := Tunidade.Create;
+  try
+    lUnidade.NOMEUNIDADE := edtNomeUnidade.Text;
+    lUnidade.UNIDADE := edtUnidade.Text;
+    lUnidade.DATACADASTROUNIDADE := dtpDataCadastro.DateTime;
+    lUnidade.Incluir(true);
+  finally
+    lUnidade.Free;
+  end;
+end;
+
+end.

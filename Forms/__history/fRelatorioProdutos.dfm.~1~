@@ -1,0 +1,77 @@
+object frmRelatorioProdutos: TfrmRelatorioProdutos
+  Left = 0
+  Top = 0
+  Caption = 'Relat'#243'rio de Produtos'
+  ClientHeight = 230
+  ClientWidth = 404
+  Color = clBtnFace
+  CustomTitleBar.CaptionAlignment = taCenter
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 189
+    Width = 404
+    Height = 41
+    Align = alBottom
+    TabOrder = 0
+    ExplicitLeft = 136
+    ExplicitTop = 56
+    ExplicitWidth = 185
+    object btnVisualizar: TButton
+      Left = 1
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alLeft
+      Caption = 'Visualizar'
+      TabOrder = 0
+      ExplicitLeft = 24
+      ExplicitTop = 16
+      ExplicitHeight = 25
+    end
+    object btnCancelar: TButton
+      Left = 76
+      Top = 1
+      Width = 75
+      Height = 39
+      Align = alLeft
+      Caption = 'Cancelar'
+      TabOrder = 1
+      OnClick = btnCancelarClick
+      ExplicitLeft = 112
+      ExplicitTop = 24
+      ExplicitHeight = 25
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 404
+    Height = 41
+    Align = alTop
+    Caption = 'Relat'#243'rio de Produtos'
+    TabOrder = 1
+    ExplicitLeft = 192
+    ExplicitTop = 32
+    ExplicitWidth = 185
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 41
+    Width = 404
+    Height = 148
+    Align = alClient
+    TabOrder = 2
+    ExplicitLeft = 200
+    ExplicitTop = 72
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+  end
+end
