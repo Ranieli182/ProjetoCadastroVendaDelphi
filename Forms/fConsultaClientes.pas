@@ -55,7 +55,7 @@ begin
   end
   else
   begin
-    ShowMessage('N„o h· registro selecionado.');
+    ShowMessage('N√£o h√° registro selecionado.');
   end;
 end;
 
@@ -66,28 +66,23 @@ begin
   if dtmConexao.qryConsultaClientes.RecordCount > 0 then
   begin
     if Application.MessageBox
-      ('Tem certeza que deseja excluir o registro selecionado?', 'ConfirmaÁ„o',
+      ('Tem certeza que deseja excluir o registro selecionado?', 'Confirma√ß√£o',
       mb_yesNO + mb_iconQuestion + MB_DEFBUTTON2) = idYes then
-      if dtmConexao.qryClientes.State in [dsBrowse] then
       begin
-        try
           lCliente := Tcliente.Create;
           try
-            lCliente.ID := dtmConexao.qryConsultaClientes.FieldByName('ID')
-              .asinteger;
+            lCliente.ID := dtmConexao.qryConsultaClientesID.asinteger;
             lCliente.Excluir(true);
-          finally
-            frmConsultaClientes.Refresh;
             AtualizarQueryCliente;
+            frmConsultaClientes.Refresh;
+          finally
+            lCliente.Free;
           end;
-        finally
-          lCliente.Free;
-        end;
       end;
   end
   else
   begin
-    ShowMessage('N„o h· registro selecionado.');
+    ShowMessage('N√£o h√° registro selecionado.');
   end;
 
 end;
@@ -172,7 +167,7 @@ begin
   end
   else
   begin
-    ShowMessage('N„o h· registro selecionado.');
+    ShowMessage('N√£o h√° registro selecionado.');
   end;
 
 end;
